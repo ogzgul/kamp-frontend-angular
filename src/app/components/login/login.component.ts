@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup,FormControl,Validator,FormBuilder, Validators } from "@angular/forms";
+import {FormGroup,FormControl, Validators, FormBuilder  } from "@angular/forms";
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/services/auth.service';
 
@@ -9,11 +9,11 @@ import { AuthService } from 'src/app/services/auth.service';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
+
   loginForm:FormGroup;
-
-
-  constructor(private formBuilder:FormBuilder,private authService:AuthService,
-    private toastrService:ToastrService){}
+  dataLoaded=false;
+  constructor(private formBuilder:FormBuilder,
+     private authService:AuthService, private toastrService:ToastrService) { }
 
   ngOnInit(): void {
     this.createLoginForm();
@@ -21,23 +21,26 @@ export class LoginComponent implements OnInit {
 
   createLoginForm(){
     this.loginForm = this.formBuilder.group({
-      email:["",Validators.required],
+      email: ["",Validators.required],
       password:["",Validators.required]
     })
-
   }
 
   login(){
     if(this.loginForm.valid){
-      console.log(this.loginForm.value)
-      let loginModel = Object.assign({},this.loginForm.value);
+      console.log(this.loginForm.value);
+      let loginModel = Object.assign({},this.loginForm.value)
+
       this.authService.login(loginModel).subscribe(response=>{
+        console.log(response)
         this.toastrService.info(response.message)
         localStorage.setItem("token",response.data.token)
-        console.log(response)
+        this.dataLoaded=true;
       },responseError=>{
+        //console.log(responseError)
         this.toastrService.error(responseError.error)
-      });
+      })
     }
   }
+
 }

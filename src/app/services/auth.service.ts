@@ -1,15 +1,15 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { LoginModel } from '../models/loginModel';
-import { HttpClient } from '@angular/common/http';
-import { TokenModel } from '../models/tokenModel';
 import { SingleResponseModel } from '../models/singleResponseModel';
+import { TokenModel } from '../models/tokenModel';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  apiUrl="https://localhost:5001/api/auth/";
 
+  apiUrl = 'https://localhost:5001/api/auth/';
   constructor(private httpClient:HttpClient) { }
 
   login(loginModel:LoginModel){
@@ -19,8 +19,12 @@ export class AuthService {
   isAuthenticated(){
     if(localStorage.getItem("token")){
       return true;
-    }else{
+    }
+    else{
       return false;
     }
   }
+
+
+
 }
